@@ -11,11 +11,11 @@ const startScreen = document.querySelector('.game-intro');
 
 window.onload = () => {
   document.getElementById('start-button').onclick = () => {
-    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
     startGame();
   };
 
   function startGame() {
     startScreen.style.display = 'none';
+    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
   }
 };
