@@ -26,6 +26,22 @@ let obstacleHeight = 30;
 
 
 //Functions needed for game
+const startCar = () => {
+  document.addEventListener("keydown", event => {
+    if (event.code === "ArrowLeft") {
+      isCarGoingLeft = true;
+    }
+    if (event.code === "ArrowRight") {
+      isCarGoingRight = true;
+    }
+  });
+
+  document.addEventListener("keyup", event => {
+    isCarGoingLeft = false;
+    isCarGoingRight = false;
+  });
+}
+
 const carMove = () => {
   if (isCarGoingLeft) {
     if (carX > 35) {
@@ -43,6 +59,39 @@ const drawObstacle = () => {
   ctx.fillStyle = 'brown';
   ctx.fillRect(obstacleX, obstacleY, obstacleWidth, obstacleHeight);
   ctx.closePath();
+  return;
+}
+
+const obstacleMove = (drawObstacle) => {
+  if (!isGameOver && obstacleY < 720) {
+    obstacleY += 2;
+  }
+}
+
+const obstacleSpawn = () => {
+  drawObstacle();
+  obstacleMove();
+}
+
+const animate = () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+  ctx.drawImage(car, carX, carY, carWidth, carHeight);
+  
+  startCar();
+  carMove();
+  //drawObstacle();
+  //obstacleMove();
+  setInterval(obstacleSpawn(), 3000);
+
+    if (isGameOver) {
+      cancelAnimationFrame(gameId);
+    } else {
+      gameId = requestAnimationFrame(animate);
+    }
+    if (gameId === 2000) {
+      isGameOver = true;
+    }
 }
 
 window.onload = () => {
@@ -55,28 +104,7 @@ window.onload = () => {
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
     ctx.drawImage(car, carX, carY, carWidth, carHeight);
 
-    carMove();
-    drawObstacle();
-    if (isGameOver) {
-      cancelAnimationFrame(gameId);
-    } else {
-      gameId = requestAnimationFrame(startGame);
-    }
-    if (gameId === 1000) {
-      isGameOver = true;
-    }
+    animate();
   }
-  document.addEventListener("keydown", event => {
-    if (event.code === "ArrowLeft") {
-      isCarGoingLeft = true;
-    }
-    if (event.code === "ArrowRight") {
-      isCarGoingRight = true;
-    }
-  });
-
-  document.addEventListener("keyup", event => {
-    isCarGoingLeft = false;
-    isCarGoingRight = false;
-  });
+  
 };
