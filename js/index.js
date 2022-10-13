@@ -8,6 +8,7 @@ const startScreen = document.querySelector('.game-intro');
 const car = new Image ();
 car.src = '/images/car.png';
 
+
 //Variables and constants needed for game performance
 let isGameOver = false;
 let gameId = 0;
@@ -18,6 +19,11 @@ let carX = canvas.width - 300;
 let carY = canvas.height - 200;
 let carWidth = 95;
 let carHeight = 100;
+let obstacleX = Math.floor(Math.random() * ((canvas.width - 40 - 200) - 40) + 40);
+let obstacleY = 0;
+let obstacleWidth = Math.floor(Math.random() * (200 - 70) + 70);
+let obstacleHeight = 30;
+
 
 //Functions needed for game
 const carMove = () => {
@@ -32,10 +38,12 @@ const carMove = () => {
   }
 }
 
-
-
-
-
+const drawObstacle = () => {
+  ctx.beginPath();
+  ctx.fillStyle = 'brown';
+  ctx.fillRect(obstacleX, obstacleY, obstacleWidth, obstacleHeight);
+  ctx.closePath();
+}
 
 window.onload = () => {
   document.getElementById('start-button').onclick = () => {
@@ -48,6 +56,7 @@ window.onload = () => {
     ctx.drawImage(car, carX, carY, carWidth, carHeight);
 
     carMove();
+    drawObstacle();
     if (isGameOver) {
       cancelAnimationFrame(gameId);
     } else {
